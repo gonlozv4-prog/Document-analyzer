@@ -1,0 +1,5 @@
+streamlit
+pdfplumber
+pillow
+pytesseract
+llama-cpp-python
