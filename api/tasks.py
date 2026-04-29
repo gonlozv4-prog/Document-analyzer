@@ -32,6 +32,13 @@ def process_document(doc_id: str, db: Session) -> None:
         cleaned = clean_document(raw_text)
         opinion_texts = segment_opinions(cleaned)
 
+        if not opinion_texts:
+            raise ValueError(
+                "El documento no contiene secciones de opinión para analizar. "
+                "Verifica que el PDF incluya secciones con títulos como "
+                "'Opinión de Negocio', 'Opinión de Crédito' u otras de opinión."
+            )
+
         # 3. Preprocesar y predecir
         preprocessed = [preprocess(t) for t in opinion_texts]
         predictor = SentimentPredictor.load()

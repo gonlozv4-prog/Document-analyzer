@@ -117,6 +117,40 @@ class TestSegmentOpinions:
         opinions = segment_opinions('')
         assert opinions == []
 
+    def test_extracts_opinion_sections_from_lettered_document(self):
+        """Documenta el caso de uso principal: estudios de crédito Banorte."""
+        text = (
+            "A. Descripción de la Empresa\n"
+            "Corporativo Logístico del Norte, empresa fundada en 2010 con flota propia.\n\n"
+            "B. Sector\n"
+            "El mercado ha experimentado digitalización acelerada en los últimos años.\n\n"
+            "C. Experiencia de cliente\n"
+            "Relación comercial desde 2015 con comportamiento de pago histórico impecable.\n\n"
+            "G. Opinión de Negocio\n"
+            "El modelo es altamente escalable y se beneficia del nearshoring global.\n\n"
+            "H. Opinión de Crédito\n"
+            "Se dictamina viabilidad favorable con ICSD de 2.3x. Se recomienda la aprobación.\n"
+        )
+        opinions = segment_opinions(text)
+        assert len(opinions) == 2
+        assert any("escalable" in o for o in opinions)
+        assert any("aprobación" in o for o in opinions)
+        # Las secciones A, B, C no deben aparecer
+        assert not any("Corporativo" in o for o in opinions)
+
+    def test_lettered_sections_returns_empty_when_no_opinion_keyword(self):
+        """Si el doc tiene secciones A-Z pero ninguna es de opinión, devuelve lista vacía."""
+        text = (
+            "A. Descripción\n"
+            "Contenido de la descripción de la empresa y sus actividades principales.\n\n"
+            "B. Sector\n"
+            "Análisis del sector logístico con crecimiento sostenido en la región norte.\n\n"
+            "C. Finanzas\n"
+            "Indicadores financieros muestran crecimiento del quince por ciento anual.\n"
+        )
+        opinions = segment_opinions(text)
+        assert opinions == []
+
 
 # ---------------------------------------------------------------------------
 # preprocessor.py — se prueba mockeando spaCy para no depender del modelo
