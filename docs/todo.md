@@ -37,16 +37,20 @@ Estado del proyecto al 27 Abr 2026. Basado en `specifications.md` v1.0.
 
 ### Semana 4 · Modelo línea base y API REST (`ml/` + `api/`)
 
-- [ ] `ml/predictor.py` — vectorización TF-IDF + clasificador SVM / Logistic Regression
-- [ ] `ml/trainer.py` — script de entrenamiento con corpus de prueba inicial
-- [ ] `ml/evaluator.py` — métricas: accuracy, F1, precision, recall, ROC-AUC
-- [ ] `ml/model_registry/` — almacenamiento versionado del modelo entrenado
-- [ ] Inicializar proyecto FastAPI (`api/main.py`)
-- [ ] `POST /api/v1/documents/upload` — recibe PDF, guarda en disco, retorna ID
-- [ ] `GET  /api/v1/documents/{id}/status` — estado del análisis (PENDIENTE / EN_PROCESO / COMPLETADO / ERROR)
-- [ ] `GET  /api/v1/documents/{id}/results` — resultados JSON con lista de opiniones clasificadas
-- [ ] Integración end-to-end: upload → NLP → modelo → resultados via API
-- [ ] Tests de integración del flujo completo
+- [x] `ml/trainer.py` — pipeline TF-IDF + LogisticRegression, `train()` y `build_pipeline()`
+- [x] `ml/predictor.py` — `SentimentPredictor` con `predict()` y `predict_batch()`
+- [x] `ml/evaluator.py` — métricas: accuracy, F1, precision, recall, ROC-AUC
+- [x] `ml/registry.py` + `ml/model_registry/` — almacenamiento versionado con manifest JSON
+- [x] `api/main.py` — FastAPI app con lifespan, Swagger en `/docs`
+- [x] `api/database.py` — SQLAlchemy 2.0 (SQLite dev / PostgreSQL prod via DATABASE_URL)
+- [x] `api/models.py` — ORM: `Document` y `Opinion`
+- [x] `api/schemas.py` — Pydantic: upload, status, resultados, resumen
+- [x] `POST /api/v1/documents/upload` — valida, guarda, encola BackgroundTask
+- [x] `GET  /api/v1/documents/{id}/status` — estado del análisis
+- [x] `GET  /api/v1/documents/{id}/results` — opiniones + resumen positivo/negativo
+- [x] `GET  /api/v1/documents/` — historial paginado
+- [x] `api/tasks.py` — flujo completo: extracción → NLP → ML → persistencia
+- [x] Tests ML + API (suite completa: 56/56 passing)
 
 **Entregable Fase 1:** API funcional que recibe un PDF y devuelve clasificaciones de sentimiento.
 
