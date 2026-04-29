@@ -22,19 +22,18 @@ Estado del proyecto al 27 Abr 2026. Basado en `specifications.md` v1.0.
 
 - [x] `ingestion/pdf_reader.py` — extracción de texto con `pdfplumber` + manejo de excepciones
 - [x] `ingestion/tiff_reader.py` — OCR con `pytesseract`, soporte multi-página con `ImageSequence`
-- [ ] Agregar soporte de extracción con `PyMuPDF` como alternativa/fallback en `pdf_reader.py`
-- [ ] `ingestion/validator.py` — validar MIME type, tamaño (≤ 50 MB) y número de páginas
-- [ ] Almacenamiento local de PDFs cargados (ruta configurable, preparado para S3/MinIO)
-- [ ] Metadatos del documento: nombre, fecha de carga, páginas, usuario
-- [ ] Tests unitarios para el módulo de ingesta
+- [x] Agregar soporte de extracción con `PyMuPDF` como primario, `pdfplumber` como fallback
+- [x] `ingestion/validator.py` — validar magic bytes (PDF/TIFF), tamaño (≤ 50 MB) y número de páginas
+- [x] `ingestion/storage.py` — almacenamiento local con UUID por archivo, ruta configurable via `.env`
+- [x] `ingestion/models.py` — `DocumentMetadata` dataclass (filename, path, tipo, tamaño, páginas, usuario, fecha)
+- [x] Tests unitarios para el módulo de ingesta (13/13 passing)
 
 ### Semana 3 · Pipeline NLP (`nlp/`)
 
-- [x] `nlp/cleaner.py` — limpieza, normalización, modelo español `es_core_news_md`, lematización
-- [ ] `nlp/cleaner.py`: agregar eliminación de headers/footers repetidos
-- [ ] `nlp/segmenter.py` — detectar y separar opiniones individuales dentro del PDF (patrones: numeración, bullets, separadores)
-- [ ] `nlp/preprocessor.py` — tokenización, lematización, eliminación de stopwords en español (NLTK + spaCy)
-- [ ] Tests unitarios para cada paso del pipeline NLP
+- [x] `nlp/cleaner.py` — `clean_document()` (limpieza raw, normalización) + `remove_headers_footers()`
+- [x] `nlp/segmenter.py` — detección automática de patrón (numeración, bullets, párrafos) + filtro de longitud mínima
+- [x] `nlp/preprocessor.py` — `preprocess()` y `preprocess_batch()` con spaCy `es_core_news_md`
+- [x] Tests unitarios NLP (19/19 passing, suite completa: 32/32)
 
 ### Semana 4 · Modelo línea base y API REST (`ml/` + `api/`)
 
