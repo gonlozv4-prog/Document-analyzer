@@ -62,23 +62,18 @@ Estado del proyecto al 27 Abr 2026. Basado en `specifications.md` v1.0.
 
 > Decisión: Streamlit en lugar de React. El backend FastAPI sigue igual; Streamlit consume la API REST.
 
-- [~] `app.py` — estructura base de la app Streamlit *(iniciado, refactorizar con páginas separadas)*
-- [ ] Configurar autenticación con `streamlit-authenticator` (login con correo + contraseña)
-- [ ] Página de carga: `st.file_uploader` (PDF ≤ 50 MB) + `st.progress` durante el análisis
-- [ ] Vista de resultados: `st.dataframe` con columnas texto, sentimiento (POSITIVO/NEGATIVO), score
-- [ ] Colorear filas por sentimiento usando `Styler` de Pandas (verde positivo, rojo negativo)
-- [ ] Conectar Streamlit con la API FastAPI via `httpx` o `requests`
+- [x] `app/app.py` — login con session_state, `st.navigation` con 3 páginas, cerrar sesión
+- [x] `app/api_client.py` — cliente httpx para upload, status, results e historial
+- [x] `app/pages/upload.py` — file uploader + polling de estado con `st.rerun()`
+- [x] Autenticación básica via env vars `APP_USER` / `APP_PASSWORD`
 
 ### Semana 6 · Dashboard, historial y exportación
 
-- [ ] Dashboard principal: métricas agregadas (total opiniones, % positivo, % negativo)
-- [ ] Gráfica de pastel (positivo vs. negativo) con Plotly o Altair (`st.plotly_chart`)
-- [ ] Histograma de scores de confianza
-- [ ] `GET /api/v1/documents/` — endpoint de historial de análisis del usuario
-- [ ] Página de historial: lista paginada (20 registros por página) con nombre, fecha y estado
-- [ ] Navegación al detalle de cualquier análisis pasado desde el historial
-- [ ] Filtro de opiniones por sentimiento con `st.selectbox` (Positivo / Negativo / Todos)
-- [ ] Botón "Exportar CSV" con `st.download_button`
+- [x] `app/pages/results.py` — métricas (`st.metric`), gráfica de pastel + histograma (Altair)
+- [x] Tabla de opiniones con colores por sentimiento (Pandas Styler)
+- [x] Filtro por sentimiento con `st.selectbox`
+- [x] Botón "Exportar CSV" con `st.download_button`
+- [x] `app/pages/history.py` — historial paginado, navegación a resultados
 
 ### Semana 7 · Fine-tuning del modelo transformer
 

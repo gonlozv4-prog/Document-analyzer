@@ -56,19 +56,20 @@ services:
     depends_on:
       - api
 
-  celery:
-    build: .
-    command: celery -A api.tasks worker --loglevel=info --concurrency=4
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - .:/app
-      - uploads:/app/uploads
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+  # celery: habilitado en Fase 3 — por ahora se usa FastAPI BackgroundTasks
+  # celery:
+  #   build: .
+  #   command: celery -A api.celery_app worker --loglevel=info --concurrency=4
+  #   restart: unless-stopped
+  #   env_file: .env
+  #   volumes:
+  #     - .:/app
+  #     - uploads:/app/uploads
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
 
 volumes:
   postgres_data:
